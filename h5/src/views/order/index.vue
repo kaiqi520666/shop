@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <van-button type="primary" @click="onPay"
+    <van-button type="success" @click="onPay"
       ><span class="text-lg">Confirm to help him make the payment</span></van-button
     >
     <div class="text-sm flex flex-col gap-2">
