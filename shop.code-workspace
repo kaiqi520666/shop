@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "h5"
+	},
+	{
+		"path": "admin"
+	},
+	{
+		"path": "api"
+	}
+],
+  "settings": {}
+}
