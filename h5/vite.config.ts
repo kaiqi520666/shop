@@ -31,4 +31,8 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: false, // ⚠️ 不清空整个 dist 目录
+  },
 })
