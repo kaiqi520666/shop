@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import OrderView from '../views/order/index.vue'
 import NotFound from '../views/general/404.vue'
+import Payment from '../views/pay/index.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -12,7 +13,7 @@ const router = createRouter({
     {
       path: '/payment/:status',
       name: 'payStatus',
-      component: () => import('../views/pay/index.vue'),
+      component: Payment,
     },
     {
       path: '/:pathMatch(.*)*',
