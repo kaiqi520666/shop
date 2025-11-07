@@ -65,17 +65,17 @@ export class ShopPayService extends BaseService {
       ...map,
       sign,
     };
-    // const res = await makeHttpRequest(
-    //   'https://uat-interface.haipay.asia/global/cashier/collect/apply',
-    //   {
-    //     method: 'POST',
-    //     data: body,
-    //     dataType: 'json',
-    //     contentType: 'json',
-    //   }
-    // );
-    // console.log('body:', body);
-    // console.log('result:', res.data);
+    const res = await makeHttpRequest(
+      'https://uat-interface.haipay.asia/global/cashier/collect/apply',
+      {
+        method: 'POST',
+        data: body,
+        dataType: 'json',
+        contentType: 'json',
+      }
+    );
+    console.log('body:', body);
+    console.log('result:', res.data);
 
     return await this.shopPayEntity.insert({
       orderId: params.orderId,
