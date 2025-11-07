@@ -14,7 +14,7 @@ export default {
         port: 3306,
         username: 'root',
         password: '439fd26a3b798924',
-        database: 'shop',
+        database: 'shop_dev',
         // 自动建表 注意：线上部署的时候不要使用，有可能导致数据丢失
         synchronize: true,
         // 打印日志

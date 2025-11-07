@@ -1,4 +1,4 @@
-import { Init, Provide } from '@midwayjs/core';
+import { Init, Inject, Provide } from '@midwayjs/core';
 import { BaseService } from '@cool-midway/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,6 +7,7 @@ import { snowflake } from '../../../comm/snowflake';
 import { sign as _sign, constants, verify as _verify } from 'crypto';
 import { makeHttpRequest } from '@midwayjs/core';
 import { faker } from '@faker-js/faker';
+import { Application } from '@midwayjs/koa';
 /**
  * 描述
  */
@@ -14,6 +15,9 @@ import { faker } from '@faker-js/faker';
 export class ShopPayService extends BaseService {
   @InjectEntityModel(ShopPayEntity)
   shopPayEntity: Repository<ShopPayEntity>;
+
+  @Inject()
+  app: Application;
 
   @Init()
   async init() {
@@ -34,6 +38,14 @@ export class ShopPayService extends BaseService {
    */
   async gereratePayOrder(params: any) {
     console.log('params:', params);
+    let callBackFailUrl = 'http://127.0.0.1:3000/api/pay/callback';
+    let callBackUrl = 'http://127.0.0.1:3000/api/pay/callback';
+    let notifyUrl = 'http://127.0.0.1:3000/api/pay/notify';
+    if (this.app.getEnv() === 'prod') {
+      callBackFailUrl = 'https://shop.fdshop.top/payment/fail';
+      callBackUrl = 'https://shop.fdshop.top/payment/success';
+      notifyUrl = 'https://pay.fdshop.top/open/shop/pay/callback';
+    }
     const uid = snowflake();
     const map = {
       appId: 2027,
@@ -42,9 +54,9 @@ export class ShopPayService extends BaseService {
       email: faker.internet.email(),
       amount: params.total,
       currency: 'USD',
-      callBackUrl: 'http://127.0.0.1:3000/api/pay/callback',
-      callBackFailUrl: 'http://127.0.0.1:3000/api/pay/callback',
-      notifyUrl: 'http://127.0.0.1:3000/api/pay/notify',
+      callBackUrl,
+      callBackFailUrl,
+      notifyUrl,
       subject: params.title,
       region: 'US',
       partnerUserId: faker.internet.username(),
@@ -56,17 +68,17 @@ export class ShopPayService extends BaseService {
       ...map,
       sign,
     };
-    // const res = await makeHttpRequest(
-    //   'https://uat-interface.haipay.asia/global/cashier/collect/apply',
-    //   {
-    //     method: 'POST',
-    //     data: body,
-    //     dataType: 'json',
-    //     contentType: 'json',
-    //   }
-    // );
+    const res = await makeHttpRequest(
+      'https://uat-interface.haipay.asia/global/cashier/collect/apply',
+      {
+        method: 'POST',
+        data: body,
+        dataType: 'json',
+        contentType: 'json',
+      }
+    );
     // console.log('body:', body);
-    // console.log('result:', res.data);
+    console.log('result:', res.data);
 
     return await this.shopPayEntity.insert({
       orderId: params.orderId,
