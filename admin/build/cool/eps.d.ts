@@ -718,6 +718,78 @@ declare namespace Eps {
 		[key: string]: any;
 	}
 
+	interface ShopPayEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+
+		/**
+		 * 唯一标识
+		 */
+		uid?: BigInt;
+
+		/**
+		 * 关联订单号
+		 */
+		orderId?: number;
+
+		/**
+		 * 支付状态
+		 */
+		status?: number;
+
+		/**
+		 * 下单IP
+		 */
+		ip?: string;
+
+		/**
+		 * 创建时间
+		 */
+		createTime?: string;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime?: string;
+
+		/**
+		 * 昵称
+		 */
+		nickName?: string;
+
+		/**
+		 * 订单数量
+		 */
+		num?: number;
+
+		/**
+		 * 商品标题
+		 */
+		title?: string;
+
+		/**
+		 * 商品价格
+		 */
+		price?: number;
+
+		/**
+		 * 商品图片
+		 */
+		img?: string;
+
+		/**
+		 * 头像
+		 */
+		avatarUrl?: string;
+
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
+
 	interface ShopProductEntity {
 		/**
 		 * ID
@@ -1173,6 +1245,11 @@ declare namespace Eps {
 	interface ShopOrderPageResponse {
 		pagination: PagePagination;
 		list: ShopOrderEntity[];
+	}
+
+	interface ShopPayPageResponse {
+		pagination: PagePagination;
+		list: ShopPayEntity[];
 	}
 
 	interface ShopProductPageResponse {
@@ -2060,6 +2137,30 @@ declare namespace Eps {
 		request: Request;
 	}
 
+	interface ShopPay {
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<ShopPayEntity>;
+
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<ShopPayPageResponse>;
+
+		/**
+		 * 权限标识
+		 */
+		permission: { info: string; page: string };
+
+		/**
+		 * 权限状态
+		 */
+		_permission: { info: boolean; page: boolean };
+
+		request: Request;
+	}
+
 	interface ShopProduct {
 		/**
 		 * 删除
@@ -2463,7 +2564,7 @@ declare namespace Eps {
 		dict: { info: DictInfo; type: DictType };
 		plugin: { info: PluginInfo };
 		recycle: { data: RecycleData };
-		shop: { order: ShopOrder; product: ShopProduct };
+		shop: { order: ShopOrder; pay: ShopPay; product: ShopProduct };
 		space: { info: SpaceInfo; type: SpaceType };
 		task: { info: TaskInfo };
 		user: { address: UserAddress; info: UserInfo };

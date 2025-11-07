@@ -17,4 +17,8 @@ export class ShopPayEntity extends BaseEntity {
   //支付状态
   @Column({ comment: '支付状态', type: 'tinyint', default: 0 })
   status: number;
+
+  //下单IP
+  @Column({ comment: '下单IP', type: 'varchar', length: 20 })
+  ip: string;
 }

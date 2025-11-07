@@ -17,7 +17,12 @@
 			<cl-table ref="Table"
 				><template #column-total="{ scope }">{{
 					(scope.row.price * scope.row.num).toFixed(2)
-				}}</template></cl-table
+				}}</template
+				><template #slot-link="{ scope }">
+					<el-button text bg type="success" @click="onCopy(scope.row)"
+						>复制链接</el-button
+					>
+				</template></cl-table
 			>
 		</cl-row>
 
@@ -41,6 +46,7 @@ import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
 import { reactive } from 'vue';
+import { ElMessage } from 'element-plus';
 const { service, setRefs, refs } = useCool();
 const { t } = useI18n();
 const options = reactive({
@@ -187,50 +193,50 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{ type: 'selection' },
-		{ label: t('订单编号'), prop: 'uid', minWidth: 220 },
+		{ label: t('订单编号'), prop: 'uid' },
 		{
 			label: t('商品缩略图'),
 			prop: 'img',
-			minWidth: 120,
+
 			component: {
-				name: 'cl-avatar'
+				name: 'cl-image'
 			}
 		},
 		{
 			label: t('商品标题'),
 			showOverflowTooltip: true,
-			prop: 'title',
-			minWidth: 120
+			prop: 'title'
 		},
 		{
 			label: t('下单用户头像'),
 			prop: 'avatarUrl',
-			minWidth: 120,
+
 			component: {
 				name: 'cl-avatar'
 			}
 		},
 		{
 			label: t('下单用户'),
-			prop: 'nickName',
-			minWidth: 120
+			prop: 'nickName'
 		},
-		{ label: t('订单状态'), prop: 'status', minWidth: 120, dict: options.status },
-		{ label: t('订单单价'), prop: 'price', minWidth: 120 },
-		{ label: t('订单数量'), prop: 'num', minWidth: 120 },
-		{ label: t('订单总额'), prop: 'total', minWidth: 120 },
+		{ label: t('订单状态'), prop: 'status', dict: options.status },
+		{ label: t('订单单价'), prop: 'price' },
+		{ label: t('订单数量'), prop: 'num' },
+		{ label: t('订单总额'), prop: 'total' },
 		{
 			label: t('下单时间'),
 			prop: 'createTime',
-			minWidth: 170,
+
 			sortable: 'desc',
 			component: { name: 'cl-date-text' }
 		},
-
-		{ type: 'op', buttons: ['edit', 'delete'] }
+		{ type: 'op', buttons: ['slot-link', 'edit', 'delete'], width: 320 }
 	]
 });
-
+const onCopy = row => {
+	navigator.clipboard.writeText(`http://localhost:5173/order/${row.uid}`);
+	ElMessage.success('复制成功');
+};
 // cl-search
 const Search = useSearch();
 

@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <van-button type="success" @click="onPay"
+    <van-button type="primary" @click="onPay"
       ><span class="text-lg">Confirm to help him make the payment</span></van-button
     >
     <div class="text-sm flex flex-col gap-2">
@@ -81,7 +81,7 @@
   </van-popup>
 </template>
 <script setup lang="ts">
-import { getOrderData } from '@/api/shop/order'
+import { getOrderData, getIp } from '@/api/shop/order'
 import { gereratePayOrder } from '@/api/shop/pay'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
@@ -100,25 +100,26 @@ const order = ref({
   orderId: '',
   total: '',
   desc: '',
+  ip: '',
 })
 onMounted(async () => {
-  const { data } = await getOrderData(orderId)
-  order.value.title = data.title
-  order.value.img = data.img
-  order.value.avatarUrl = data.avatarUrl
-  order.value.nickName = data.nickName
-  order.value.price = data.price
-  order.value.num = data.num
-  order.value.orderId = orderId
+  const { data: orderData } = await getOrderData(orderId)
+  const ipinfo = await getIp()
+  order.value.title = orderData.data.title
+  order.value.img = orderData.data.img
+  order.value.avatarUrl = orderData.data.avatarUrl
+  order.value.nickName = orderData.data.nickName
+  order.value.price = orderData.data.price
+  order.value.num = orderData.data.num
+  order.value.orderId = orderData.data.id
   order.value.total = (order.value.price * order.value.num).toFixed(2)
-  order.value.desc = data.desc
+  order.value.desc = orderData.data.desc
+  order.value.ip = ipinfo.data
 })
 const onPay = async () => {
   display.value = true
   const payInfo = await gereratePayOrder(order.value)
-
   const payUrl = payInfo.data.data.payUrl
-  console.log(payUrl)
   display.value = false
   window.location.href = payUrl
 }
