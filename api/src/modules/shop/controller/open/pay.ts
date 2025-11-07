@@ -6,7 +6,7 @@ import { ShopPayService } from '../../service/pay';
  * 描述
  */
 @CoolController({
-  serviceApis: ['gereratePayOrder'],
+  serviceApis: ['gereratePayOrder', 'gererateData'],
   entity: ShopPayEntity,
   service: ShopPayService,
 })

@@ -6,6 +6,7 @@ import { ShopPayEntity } from '../entity/pay';
 import { snowflake } from '../../../comm/snowflake';
 import { sign as _sign, constants, verify as _verify } from 'crypto';
 import { makeHttpRequest } from '@midwayjs/core';
+import { faker } from '@faker-js/faker';
 /**
  * 描述
  */
@@ -19,6 +20,14 @@ export class ShopPayService extends BaseService {
     await super.init();
     this.setEntity(this.shopPayEntity);
   }
+  async gererateData() {
+    const data = {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      partnerUserId: faker.internet.username(),
+    };
+    return data;
+  }
 
   /**
    * 描述
@@ -29,8 +38,8 @@ export class ShopPayService extends BaseService {
     const map = {
       appId: 2027,
       orderId: uid,
-      name: 'JohnDoe',
-      email: '123456@123.com',
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
       amount: params.total,
       currency: 'USD',
       callBackUrl: 'http://127.0.0.1:3000/api/pay/callback',
@@ -38,7 +47,7 @@ export class ShopPayService extends BaseService {
       notifyUrl: 'http://127.0.0.1:3000/api/pay/notify',
       subject: params.title,
       region: 'US',
-      partnerUserId: 'zhuabc123',
+      partnerUserId: faker.internet.username(),
     };
     const data = this.getData(map, 'v64y0V5f6S7hWCy2z259Pz1w61HEpGTW');
 
