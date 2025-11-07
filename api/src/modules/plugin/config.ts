@@ -20,7 +20,10 @@ export default options => {
       // 文件上传
       upload: {
         // 地址前缀
-        domain: `http://127.0.0.1:${options?.app?.getConfig('koa.port')}`,
+        domain:
+          process.env.NODE_ENV === 'local'
+            ? `http://127.0.0.1:${options?.app?.getConfig('koa.port')}`
+            : `https://img.fdshop.top`,
       },
     },
   } as ModuleConfig;

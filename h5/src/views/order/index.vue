@@ -83,6 +83,7 @@
 <script setup lang="ts">
 import { getOrderData, getIp } from '@/api/shop/order'
 import { gereratePayOrder } from '@/api/shop/pay'
+import { showDialog } from 'vant'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -119,8 +120,19 @@ onMounted(async () => {
 const onPay = async () => {
   display.value = true
   const payInfo = await gereratePayOrder(order.value)
-  const payUrl = payInfo.data.data.payUrl
-  display.value = false
-  window.location.href = payUrl
+  console.log(payInfo)
+  try {
+    const payUrl = payInfo.data.data.data.payUrl
+    window.location.href = payUrl
+  } catch (error) {
+    showDialog({
+      title: 'tips',
+      message: error as string,
+    }).then(() => {
+      // on close
+    })
+  } finally {
+    display.value = false
+  }
 }
 </script>

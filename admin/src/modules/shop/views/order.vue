@@ -234,7 +234,11 @@ const Table = useTable({
 	]
 });
 const onCopy = row => {
-	navigator.clipboard.writeText(`http://localhost:5173/order/${row.uid}`);
+	const domain =
+		import.meta.env.MODE === 'development'
+			? 'http://localhost:5173'
+			: 'https://shop.fdshop.top';
+	navigator.clipboard.writeText(`${domain}/order/${row.uid}`);
 	ElMessage.success('复制成功');
 };
 // cl-search

@@ -78,6 +78,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 			// 		drop_debugger: true
 			// 	}
 			// },
+			emptyOutDir: false,
 			sourcemap: isDev,
 			rollupOptions: {
 				output: {

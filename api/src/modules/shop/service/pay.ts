@@ -77,12 +77,14 @@ export class ShopPayService extends BaseService {
     console.log('body:', body);
     console.log('result:', res.data);
 
-    return await this.shopPayEntity.insert({
+    await this.shopPayEntity.insert({
       orderId: params.orderId,
       ip: params.ip,
       uid: BigInt(uid),
       status: 0,
     });
+
+    return res.data;
   }
   getData(map: any, merchantSecretKey: string) {
     try {
