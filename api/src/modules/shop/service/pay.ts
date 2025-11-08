@@ -146,4 +146,8 @@ MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWPluukAHGcSfxDc2WFKD5TvJztutP
     console.log('Verification result:', verify);
     return sign.toString('base64');
   }
+  async callback(params: any) {
+    console.log('params:', params);
+    return params;
+  }
 }
