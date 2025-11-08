@@ -147,6 +147,7 @@ MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWPluukAHGcSfxDc2WFKD5TvJztutP
     return sign.toString('base64');
   }
   async callback(params: any) {
+    console.log('params:', params);
     await this.shopPayEntity.update(
       {
         uid: BigInt(params.orderId),
