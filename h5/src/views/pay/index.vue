@@ -64,7 +64,7 @@
       </div>
 
       <!-- Button -->
-      <router-link to="/" class="block mt-8">
+      <router-link :to="`/order/${uid}`" class="block mt-8">
         <van-button round block :type="status === 'success' ? 'success' : 'danger'">
           {{ status === 'success' ? 'Back to Home' : 'Try Again' }}
         </van-button>
