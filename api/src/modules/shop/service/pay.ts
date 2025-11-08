@@ -128,13 +128,11 @@ MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWPluukAHGcSfxDc2WFKD5TvJztutP
 
     return sign.toString('base64');
   }
-  checkSign(param: any, sign: string) {
+  checkSign(params: any) {
     const pub = `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1j5brpABxnEn8Q3NlhSg+U7yc7brT+ZEc4iFKirv3wjKft4W1/ejLnXur7+2rthEsI/ZnVoU7JXD6mHeTVuT5n1ukWl1IUMYz8L+Pxw6MOS4gG8L6PzNL8Rm4Hv6ESF0dwR+yRImCxGjP+8m4T7lsjYELK+cJEKh0aq98+OVCe8xkPH0HDagdzzLMQcMWjDBKIFlMYsjY1VYmnhruY1dwpUu0YTW5b27MtTg8VmcDDtoT0Sz0afUpEPqm6CRbHYvY3qaGZlyMULG1uINwuPx9Uncvz4DQNgjQnvUQy4zDuNuyTCGXR7fHDY1CWoxkJW7Q6FyJB9AS0AG4ZWnQTwUGwIDAQAB
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAws27QOjh+TtFJmCly9b6xEPlDkH++8c0Yi3Ld64Jd5emtjjwZTjjaat3S3/BUZgAPEp3BI2EcagXe6GJtw66QU9lu464Y1H+KqmntHLkxULM/YgJyWgOnlAUKj1lrX5J9dKtddvSlFeU2HDxiQlEgKyz5f7M4YE62wnBt4ezaKjWFflniaBqo70Vwh5Fm+mKCJ2nqDWXutpcuITpO8a6tZVEj/XY6t0XFNuMitcao7Bz2ZQxOzt/US3fbMHoCqAmYSKcC87rHLT1VJbqWIfbtWQQ6/fOU0fEcA/dRbollC3qan01973KW1CeabHsbRmedbRXVAZwN2U46aKFWjgqzwIDAQAB
 -----END PUBLIC KEY-----`;
-    delete param.sign;
-    const data = this.getData(param);
-
+    const data = this.getData(params);
     const publicKeyBuffer = Buffer.from(pub, 'utf-8');
     // 使用公钥验证签名
     const verify = _verify(
@@ -144,12 +142,13 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1j5brpABxnEn8Q3NlhSg+U7yc7brT+ZEc4iF
         key: publicKeyBuffer,
         padding: constants.RSA_PKCS1_PADDING,
       },
-      Buffer.from(sign, 'base64')
+      Buffer.from(params.sign, 'base64')
     );
     return verify;
   }
   async callback(params: any) {
-    console.log('params:', this.checkSign(params, params.sign));
+    console.log('params:', params);
+    console.log('check:', this.checkSign(params));
     await this.shopPayEntity.update(
       {
         uid: BigInt(params.orderId),
