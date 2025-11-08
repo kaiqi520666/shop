@@ -21,4 +21,40 @@ export class ShopPayEntity extends BaseEntity {
   //下单IP
   @Column({ comment: '下单IP', type: 'varchar', length: 20 })
   ip: string;
+
+  //appId
+  @Column({ comment: 'appId', type: 'varchar', length: 10, nullable: true })
+  appId: string;
+
+  //fee
+  @Column({
+    comment: 'fee',
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    default: 0,
+  })
+  fee: number;
+
+  //currency
+  @Column({ comment: '货币', type: 'varchar', length: 10, nullable: true })
+  currency: string;
+
+  //originalCurrency
+  @Column({
+    comment: '原始货币',
+    type: 'varchar',
+    length: 10,
+    nullable: true,
+  })
+  originalCurrency: string;
+
+  //orderNo
+  @Column({
+    comment: '平台订单号',
+    type: 'varchar',
+    length: 20,
+    nullable: true,
+  })
+  orderNo: string;
 }

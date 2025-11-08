@@ -37,12 +37,12 @@ export class ShopPayService extends BaseService {
   async gereratePayOrder(params: any) {
     let callBackFailUrl = `https://shop.fdshop.top/payment/fail/${params.uid}`;
     let callBackUrl = `https://shop.fdshop.top/payment/success/${params.uid}`;
-    let notifyUrl = 'https://pay.fdshop.top/open/shop/pay/callback';
-    if (process.env.NODE_ENV === 'local') {
-      callBackFailUrl = 'http://127.0.0.1:3000/api/pay/callback';
-      callBackUrl = 'http://127.0.0.1:3000/api/pay/callback';
-      notifyUrl = 'http://127.0.0.1:3000/api/pay/notify';
-    }
+    let notifyUrl = 'https://notify.fdshop.top/open/shop/pay/callback';
+    // if (process.env.NODE_ENV === 'local') {
+    //   callBackFailUrl = 'http://127.0.0.1:3000/api/pay/callback';
+    //   callBackUrl = 'http://127.0.0.1:3000/api/pay/callback';
+    //   notifyUrl = 'http://127.0.0.1:3000/api/pay/notify';
+    // }
     const uid = snowflake();
     const map = {
       appId: 2027,
@@ -147,7 +147,19 @@ MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWPluukAHGcSfxDc2WFKD5TvJztutP
     return sign.toString('base64');
   }
   async callback(params: any) {
-    console.log('params:', params);
+    await this.shopPayEntity.update(
+      {
+        uid: BigInt(params.orderId),
+      },
+      {
+        status: params.status,
+        appId: params.appId,
+        orderNo: params.orderNo,
+        currency: params.currency,
+        originalCurrency: params.originalCurrency,
+        fee: params.fee,
+      }
+    );
     return params;
   }
 }
