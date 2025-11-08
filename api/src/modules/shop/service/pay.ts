@@ -35,9 +35,8 @@ export class ShopPayService extends BaseService {
    * 描述
    */
   async gereratePayOrder(params: any) {
-    console.log(process.env.NODE_ENV);
-    let callBackFailUrl = 'https://shop.fdshop.top/payment/fail';
-    let callBackUrl = 'https://shop.fdshop.top/payment/success';
+    let callBackFailUrl = `https://shop.fdshop.top/payment/fail/${params.uid}`;
+    let callBackUrl = `https://shop.fdshop.top/payment/success/${params.uid}`;
     let notifyUrl = 'https://pay.fdshop.top/open/shop/pay/callback';
     if (process.env.NODE_ENV === 'local') {
       callBackFailUrl = 'http://127.0.0.1:3000/api/pay/callback';

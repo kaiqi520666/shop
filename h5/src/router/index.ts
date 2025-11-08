@@ -11,7 +11,7 @@ const router = createRouter({
       component: OrderView,
     },
     {
-      path: '/payment/:status',
+      path: '/payment/:status/:uid',
       name: 'payStatus',
       component: Payment,
     },

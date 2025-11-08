@@ -51,15 +51,15 @@
       >
         <div class="flex justify-between py-3">
           <span>Transaction ID</span>
-          <span :class="statusColor">202511070001</span>
+          <span :class="statusColor">{{ uid }}</span>
         </div>
         <div class="flex justify-between py-3">
-          <span>Payment Method</span>
-          <span :class="statusColor">WeChat Pay</span>
+          <span>Price</span>
+          <span :class="statusColor">{{ order.total }}</span>
         </div>
         <div class="flex justify-between py-3">
           <span>Transaction Time</span>
-          <span :class="statusColor">2025.11.07</span>
+          <span :class="statusColor">{{ order.createTime }}</span>
         </div>
       </div>
 
@@ -74,13 +74,43 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Icon as VanIcon, Button as VanButton } from 'vant'
+import { getOrderData } from '@/api/shop/order'
 
 // 获取 URL 参数 ?status=success or fail
 const route = useRoute()
 const status = computed(() => route.params.status || 'fail')
+const uid = computed(() => route.params.uid)
+const order = ref({
+  title: '',
+  img: '',
+  avatarUrl: '',
+  nickName: '',
+  price: 0,
+  num: 0,
+  orderId: '',
+  total: '',
+  desc: '',
+  ip: '',
+  createTime: '',
+})
+
+onMounted(async () => {
+  const { data: orderData } = await getOrderData(route.params.uid)
+
+  order.value.title = orderData.data.title
+  order.value.img = orderData.data.img
+  order.value.avatarUrl = orderData.data.avatarUrl
+  order.value.nickName = orderData.data.nickName
+  order.value.price = orderData.data.price
+  order.value.num = orderData.data.num
+  order.value.orderId = orderData.data.id
+  order.value.total = (order.value.price * order.value.num).toFixed(2)
+  order.value.desc = orderData.data.desc
+  order.value.createTime = orderData.data.createTime
+})
 
 // 颜色切换
 const statusColor = computed(() => (status.value === 'success' ? 'text-green-500' : 'text-red-500'))

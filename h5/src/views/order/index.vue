@@ -102,6 +102,7 @@ const order = ref({
   total: '',
   desc: '',
   ip: '',
+  uid: orderId,
 })
 onMounted(async () => {
   const { data: orderData } = await getOrderData(orderId)
