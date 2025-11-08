@@ -44,15 +44,18 @@ const options = {
 	status: [
 		{
 			label: t('待支付'),
-			value: 0
+			value: 0,
+			type: 'info'
 		},
 		{
 			label: t('支付成功'),
-			value: 1
+			value: 2,
+			type: 'success'
 		},
 		{
 			label: t('支付失败'),
-			value: 2
+			value: 3,
+			type: 'danger'
 		}
 	]
 };
@@ -118,6 +121,11 @@ const Table = useTable({
 		{
 			label: t('下单IP'),
 			prop: 'ip',
+			minWidth: 120
+		},
+		{
+			label: t('手续费'),
+			prop: 'fee',
 			minWidth: 120
 		},
 		{

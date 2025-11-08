@@ -745,6 +745,31 @@ declare namespace Eps {
 		ip?: string;
 
 		/**
+		 * appId
+		 */
+		appId?: string;
+
+		/**
+		 * fee
+		 */
+		fee?: number;
+
+		/**
+		 * 货币
+		 */
+		currency?: string;
+
+		/**
+		 * 原始货币
+		 */
+		originalCurrency?: string;
+
+		/**
+		 * 平台订单号
+		 */
+		orderNo?: string;
+
+		/**
 		 * 创建时间
 		 */
 		createTime?: string;
