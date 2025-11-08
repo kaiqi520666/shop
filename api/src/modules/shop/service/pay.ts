@@ -7,6 +7,7 @@ import { snowflake } from '../../../comm/snowflake';
 import { sign as _sign, constants, verify as _verify } from 'crypto';
 import { makeHttpRequest } from '@midwayjs/core';
 import { faker } from '@faker-js/faker';
+import { generateRandomId } from '../../../comm/userId';
 
 /**
  * 描述
@@ -25,7 +26,7 @@ export class ShopPayService extends BaseService {
     const data = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
-      partnerUserId: faker.internet.username(),
+      partnerUserId: generateRandomId(),
     };
     return data;
   }
@@ -56,7 +57,7 @@ export class ShopPayService extends BaseService {
       notifyUrl,
       subject: params.title,
       region: 'US',
-      partnerUserId: faker.internet.username(),
+      partnerUserId: generateRandomId(),
     };
     const data = this.getData(map, 'v64y0V5f6S7hWCy2z259Pz1w61HEpGTW');
 
