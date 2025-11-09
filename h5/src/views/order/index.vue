@@ -16,7 +16,8 @@
                 overflow: hidden;
               "
             >
-              I selected a wonderful treasure on Taobao. Please use Alipay to pay for me. Thank you!
+              I am shopping for a wonderful treasure. Please pay for it with PayPal or credit card.
+              Thank you
             </p>
           </div>
         </div>
@@ -61,13 +62,8 @@
         2. Before making payment, please make sure to confirm the identity of the other party to
         avoid any fraudulent activities.
       </div>
-      <div class="text-gray-400">
-        3. Selecting 'Long term payment for TA' will redirect you to a page where you can activate a
-        family card for the other party. After completing the activation, you still need to return
-        to the current page to continue paying for the current order.
-      </div>
       <div class="text-red-400">
-        4.If a refund occurs in the transaction, the paid amount will be returned to the payer's
+        3.If a refund occurs in the transaction, the paid amount will be returned to the payer's
         payment account through the original payment method.
       </div>
     </div>
