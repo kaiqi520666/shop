@@ -45,24 +45,11 @@ defineOptions({
 import { useCrud, useTable, useUpsert, useSearch } from '@cool-vue/crud';
 import { useCool } from '/@/cool';
 import { useI18n } from 'vue-i18n';
-import { reactive } from 'vue';
+
 import { ElMessage } from 'element-plus';
 const { service, setRefs, refs } = useCool();
 const { t } = useI18n();
-const options = reactive({
-	status: [
-		{
-			label: t('未支付'),
-			value: 0,
-			type: 'danger'
-		},
-		{
-			label: t('已支付'),
-			value: 1,
-			type: 'success'
-		}
-	]
-});
+
 const productColumns = [
 	{
 		label: '头像',
@@ -136,18 +123,6 @@ const Upsert = useUpsert({
 			},
 			required: true
 		},
-
-		{
-			label: t('订单状态'),
-			prop: 'status',
-			value: 0,
-			component: {
-				name: 'el-radio-group',
-				options: options.status
-			},
-			span: 12,
-			required: true
-		},
 		{
 			label: t('订单数量'),
 			prop: 'num',
@@ -219,7 +194,6 @@ const Table = useTable({
 			label: t('下单用户'),
 			prop: 'nickName'
 		},
-		{ label: t('订单状态'), prop: 'status', dict: options.status },
 		{ label: t('订单单价'), prop: 'price' },
 		{ label: t('订单数量'), prop: 'num' },
 		{ label: t('订单总额'), prop: 'total' },

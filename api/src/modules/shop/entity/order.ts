@@ -20,7 +20,7 @@ export class ShopOrderEntity extends BaseEntity {
   @Column({ comment: '商品id' })
   productId: number;
   //订单状态
-  @Column({ comment: '订单状态' })
+  @Column({ comment: '订单状态', default: 0 })
   status: number;
   //订单数量
   @Column({ comment: '订单数量' })
