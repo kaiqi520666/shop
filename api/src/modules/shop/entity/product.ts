@@ -11,8 +11,8 @@ export class ShopProductEntity extends BaseEntity {
   @Column({ comment: '商品唯一id', type: 'bigint', default: () => snowflake() })
   uid: bigint;
   //商品图片
-  @Column({ comment: '商品图片', type: 'varchar', length: 255 })
-  img: string;
+  @Column({ comment: '商品图片', type: 'json' })
+  img: string[];
   //商品价格
   @Column({ comment: '商品价格', type: 'decimal', precision: 10, scale: 2 })
   price: number;

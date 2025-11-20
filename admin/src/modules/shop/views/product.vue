@@ -53,7 +53,7 @@ const Upsert = useUpsert({
 		{
 			label: t('商品图片'),
 			prop: 'img',
-			component: { name: 'cl-upload' },
+			component: { name: 'cl-upload', props: { multiple: true } },
 			span: 12,
 			required: true
 		},
@@ -133,7 +133,7 @@ const Table = useTable({
 			prop: 'img',
 			minWidth: 100,
 			component: {
-				name: 'cl-avatar'
+				name: 'cl-image'
 			}
 		},
 		{ label: t('商品价格'), prop: 'price', minWidth: 120 },

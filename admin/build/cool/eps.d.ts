@@ -700,7 +700,7 @@ declare namespace Eps {
 		/**
 		 * 商品图片
 		 */
-		img?: string;
+		img?: any;
 
 		/**
 		 * 头像
@@ -802,7 +802,7 @@ declare namespace Eps {
 		/**
 		 * 商品图片
 		 */
-		img?: string;
+		img?: any;
 
 		/**
 		 * 头像
@@ -829,7 +829,7 @@ declare namespace Eps {
 		/**
 		 * 商品图片
 		 */
-		img?: string;
+		img?: any;
 
 		/**
 		 * 商品价格
