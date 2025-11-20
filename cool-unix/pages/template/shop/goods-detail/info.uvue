@@ -1,0 +1,34 @@
+<template>
+	<view class="flex">
+		<cl-text :pt="{ className: 'text-lg font-bold mb-3' }">{{ title }}</cl-text>
+
+		<view class="flex flex-row items-center mb-3">
+			<view class="flex flex-row items-end">
+				<cl-text
+					type="amount"
+					:value="price"
+					color="error"
+					currency="$"
+					:pt="{
+						className: 'font-bold ml-1 text-2xl'
+					}"
+				>
+				</cl-text>
+			</view>
+
+			<cl-text color="info" :pt="{ className: 'text-sm ml-auto' }" rounded
+				>已售 {{ sales }} 件</cl-text
+			>
+		</view>
+
+		<view class="flex flex-row mb-3">
+			<cl-tag type="error" plain>满199减50</cl-tag>
+			<cl-tag type="error" plain>满299减100</cl-tag>
+		</view>
+	</view>
+</template>
+
+<script setup lang="ts">
+//定义子组件title
+const prop = defineProps<{ title: string; price: number; sales: number }>();
+</script>

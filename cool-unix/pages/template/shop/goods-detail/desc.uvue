@@ -1,0 +1,14 @@
+<template>
+	<view v-html="info" class="richtext"> </view>
+</template>
+
+<script setup lang="ts">
+defineProps<{ info: string }>();
+</script>
+<style scoped lang="scss">
+.richtext :deep(img) {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+</style>

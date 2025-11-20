@@ -1,0 +1,355 @@
+<template>
+	<cl-page class="gap-y-2">
+		<cl-topbar
+			fixed
+			:show-back="false"
+			safe-area-top
+			:height="isMp() ? null : 100"
+			:pt="{
+				className: '!z-50'
+			}"
+		>
+			<view
+				class="flex flex-row items-center p-3 flex-1 w-full"
+				:class="{
+					'pt-0': isMp()
+				}"
+			>
+				<view class="bg-primary-500 rounded-lg p-[12rpx]">
+					<cl-image
+						src="/static/logo.png"
+						:width="32"
+						:height="32"
+						:show-loading="false"
+					></cl-image>
+				</view>
+
+				<cl-text
+					color="primary"
+					:pt="{
+						className: '!text-xl mr-auto ml-2 flex-1'
+					}"
+				>
+					{{ config.name }}
+				</cl-text>
+
+				<view
+					class="bg-surface-500 h-8 w-8 rounded-full flex flex-row items-center justify-center mr-3"
+					@tap="setSize"
+				>
+					<cl-icon name="font-size" color="white"></cl-icon>
+				</view>
+
+				<view
+					class="bg-primary-500 h-8 w-8 rounded-full flex flex-row items-center justify-center"
+					:class="{
+						'mr-24': isMp()
+					}"
+					@tap="setLocale"
+				>
+					<cl-icon name="translate" color="white"></cl-icon>
+				</view>
+			</view>
+		</cl-topbar>
+		<view class="px-2">
+			<cl-banner
+				:list="list"
+				:autoplay="true"
+				:interval="3000"
+				:height="400"
+				:show-dots="true"
+			></cl-banner>
+		</view>
+		<cl-row class="mt-2 px-2 justify-between"
+			><cl-text color="warn">限时特惠</cl-text
+			><cl-countdown
+				:hour="10"
+				:pt="{
+					text: {
+						className: parseClass([
+							'px-2 py-1 rounded-md',
+							[isDark, 'bg-surface-700', 'bg-surface-100']
+						])
+					},
+					splitor: {
+						className: 'px-2'
+					}
+				}"
+			></cl-countdown
+		></cl-row>
+
+		<scroll-view scroll-x class="flex-row gap-3 mt-2 px-2">
+			<image :src="data" v-for="data in list" class="w-32 h-32 rounded mx-1"></image>
+		</scroll-view>
+
+		<view class="flex flex-row justify-center py-2"
+			><cl-tabs v-model="tabVal" :list="tabList" fill></cl-tabs
+		></view>
+		<template v-for="(item, index) in tabDataList" :key="index">
+			<view class="px-2" v-if="tabVal == index">
+				<cl-row :gutter="12">
+					<cl-col :span="12" v-for="data in item" @tap="toPath(data.id)">
+						<view
+							class="bg-slate-50 dark:bg-slate-900 rounded-md overflow-hidden flex flex-col"
+						>
+							<cl-image
+								:src="data.img[0]"
+								width="100%"
+								height="300rpx"
+								:pt="{
+									inner: {
+										className: '!rounded-none'
+									}
+								}"
+							></cl-image>
+							<view class="p-3">
+								<cl-text ellipsis :lines="2" :size="24">{{ data.title }}</cl-text>
+								<cl-row class="flex justify-between items-center py-1">
+									<cl-text
+										type="amount"
+										currency="$"
+										:value="data.price"
+									></cl-text>
+									<cl-button
+										rounded
+										type="primary"
+										icon="shopping-cart-2-line"
+									></cl-button>
+								</cl-row>
+							</view>
+						</view>
+					</cl-col>
+				</cl-row>
+			</view>
+		</template>
+
+		<cl-row class="mt-2 px-2"><cl-text color="success">天天特价</cl-text></cl-row>
+		<cl-waterfall ref="waterfallRef" :column="2" :gutter="16" class="mt-2">
+			<template #item="{ item, index }">
+				<view class="bg-white mb-3 rounded-xl dark:!bg-gray-800 relative">
+					<!-- 图片展示 -->
+					<image :src="item.image" mode="widthFix" class="w-full rounded"></image>
+
+					<!-- 广告标识 -->
+					<template v-if="item.isAd">
+						<cl-tag :pt="{ className: 'absolute left-1 top-1 scale-75' }">
+							广告
+						</cl-tag>
+						<cl-icon
+							color="white"
+							name="close-line"
+							:pt="{ className: 'absolute right-2 top-2' }"
+						></cl-icon>
+					</template>
+
+					<!-- 内容区域 -->
+					<view class="p-3" v-else>
+						<cl-text>{{ item.title }}</cl-text>
+
+						<!-- 点赞区域 -->
+						<cl-row
+							class="mt-2 flex justify-between"
+							:pt="{ className: 'items-center' }"
+						>
+							<cl-row class="flex items-center">
+								<cl-text :pt="{ className: '!text-sm ml-1' }">$</cl-text>
+								<cl-text :pt="{ className: '!text-xl ml-1' }">
+									{{ item.likeCount }}
+								</cl-text>
+							</cl-row>
+							<cl-button type="primary" icon="shopping-cart-2-line"></cl-button>
+						</cl-row>
+					</view>
+				</view>
+			</template>
+		</cl-waterfall>
+
+		<!-- 自定义底部导航栏 -->
+		<custom-tabbar></custom-tabbar>
+
+		<!-- 主题设置 -->
+		<locale-set :ref="refs.set('localeSet')"></locale-set>
+
+		<!-- 字体大小设置 -->
+		<size-set :ref="refs.set('sizeSet')"></size-set>
+	</cl-page>
+</template>
+
+<script lang="ts" setup>
+import { isMp, useRefs, random, request, parseClass, isDark, router } from "@/cool";
+
+import { onMounted, ref } from "vue";
+
+import { config } from "@/config";
+import LocaleSet from "@/components/locale-set.uvue";
+import SizeSet from "@/components/size-set.uvue";
+import CustomTabbar from "@/components/tabbar.uvue";
+import type { ClTabsItem } from "@/uni_modules/cool-ui";
+const list = ref<string[]>([]);
+let id = 0;
+const tabVal = ref(0);
+
+const tabList = ref<ClTabsItem[]>([
+	{
+		label: "新品",
+		value: 0
+	},
+	{
+		label: "折扣",
+		value: 1
+	},
+	{
+		label: "特价",
+		value: 2
+	},
+	{
+		label: "热卖",
+		value: 3
+	}
+]);
+const tabDataList = ref<any>([]);
+const waterfallRef = ref<ClWaterfallComponentPublicInstance | null>(null);
+
+// 生成模拟数据
+function generateMockData() {
+	return [
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "春日樱花盛开时节，粉色花瓣如诗如画般飘洒",
+			image: "/static/demo/1.jpg"
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "夕阳西下的海滩边，金色阳光温柔地洒在波光粼粼的海面上，构成令人心旷神怡的日落美景",
+			image: "/static/demo/2.jpg"
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "寒冬腊月时分，洁白雪花纷纷扬扬地覆盖着整个世界，感受冬日的宁静与美好",
+			image: "/static/demo/3.jpg"
+		},
+		{
+			id: id++,
+			image: "/static/demo/4.jpg",
+			isAd: true
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "都市夜景霓虹闪烁，五彩斑斓光芒照亮城市营造梦幻般景象",
+			image: "/static/demo/5.jpg"
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "云雾缭绕的山间风光如诗如画让人心旷神怡，微风轻抚树梢带来阵阵清香，鸟儿在林间自由歌唱",
+			image: "/static/demo/6.jpg"
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "古老建筑与现代摩天大楼交相辉映，传统与现代完美融合创造独特城市景观",
+			image: "/static/demo/7.jpg"
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "广袤田野绿意盎然风光无限，金黄麦浪在微风中轻柔摇曳，农家炊烟袅袅升起",
+			image: "/static/demo/8.jpg"
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "璀璨星空下银河横跨天际，繁星闪烁神秘光芒营造浪漫夜空美景",
+			image: "/static/demo/9.jpg"
+		},
+		{
+			id: id++,
+			likeCount: random(100, 1000),
+			title: "雄伟瀑布从高耸悬崖飞流直下激起千层浪花，彩虹在水雾中若隐若现如梦如幻",
+			image: "/static/demo/10.jpg"
+		}
+	];
+}
+
+// 刷新数据
+function refresh() {
+	const items = generateMockData();
+	waterfallRef.value?.append(items);
+}
+
+const refs = useRefs();
+
+function setLocale() {
+	refs.open("localeSet");
+}
+
+function setSize() {
+	refs.open("sizeSet");
+}
+
+// 初始化数据
+onMounted(async () => {
+	refresh();
+	const res = await request({
+		url: "/open/shop/product/page",
+		method: "POST",
+		data: {
+			page: 1,
+			size: 10
+		}
+	});
+	for (let i = 0; i < res.list.length; i++) {
+		list.value.push(res.list[i].img[0]);
+	}
+	const arr: any[] = [];
+	for (let i = 0; i < res.list.length; i++) {
+		arr.push(res.list[i]);
+	}
+
+	//将tabDataList.value打乱浅赋值给tabDataList2,只取前4个
+	tabDataList.value.push(shuffle(arr).slice(0, 4));
+	tabDataList.value.push(shuffle(arr).slice(0, 4));
+	tabDataList.value.push(shuffle(arr).slice(0, 4));
+	tabDataList.value.push(shuffle(arr).slice(0, 4));
+
+	console.log(tabDataList.value);
+});
+function shuffle(arr) {
+	const a = [...arr];
+	for (let i = a.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+
+		// UTS 不支持解构交换： [a[i], a[j]] = [a[j], a[i]];
+		const temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
+	}
+	return a;
+}
+const toPath = (id: string) => {
+	router.push({
+		path: "/pages/template/shop/goods-detail/index",
+		query: { id }
+	});
+};
+</script>
+
+<style lang="scss" scoped>
+.group {
+	@apply mb-10;
+
+	.list {
+		.item {
+			@apply flex flex-col items-center;
+			@apply rounded-xl bg-white px-2;
+			height: 140rpx;
+			margin-bottom: 10rpx;
+			padding-top: 36rpx;
+		}
+	}
+}
+</style>
